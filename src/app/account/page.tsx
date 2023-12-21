@@ -1,5 +1,6 @@
 import UsernameForm from "@/components/forms/UsernameForm";
 import { Page } from "@/models/Page";
+import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "../api/auth/[...nextauth]/route";
@@ -18,6 +19,7 @@ const AccountPage = async ({ searchParams }: AccountPageProps) => {
     return redirect("/");
   }
 
+  mongoose.connect(process.env.MONGO_URI!);
   const page = await Page.findOne({ owner: session?.user?.email });
 
   if (page) {
